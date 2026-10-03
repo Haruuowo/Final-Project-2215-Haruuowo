@@ -1,174 +1,174 @@
-# Your Project Name
+# City Pop Discography & Community Vault
 
-> **Replace this whole file.** It is a worked example of the README your project
-> will be graded from, not a file to leave as it is. Start with
-> [START-HERE.md](START-HERE.md).
+A curated full-stack web application and discography vault for 1970s–1980s Japanese City Pop, Funk, and AOR vinyl records, allowing retro music enthusiasts to discover albums by vibe, listen to continuous 30-second audio previews, and share community recommendations.
 
-One sentence saying what this does and who it is for.
+**Live site:** https://haruuowo.github.io/CityPopDiscography-APSI/  
+**API:** https://your-project-ref.supabase.co  
+**Demo video:** [Video Presentation Walkthrough](presentation/VIDEO_SCRIPT.md)
 
-**Live site:** https://yourusername.github.io/your-repo-name/
-**API:** https://your-api.onrender.com/healthz
-**Demo video:** (link)
+> **This deployment is running in demo mode by default.** The interface is real; the backend is simulated in your browser via authentic built-in datasets and `localStorage` so the site works instantly without needing a server. See [Demo mode](#demo-mode) below.
 
-> **This deployment is running in demo mode.** The interface is real; the backend
-> is simulated in your browser so the site works without a server. See
-> [Demo mode](#demo-mode) below. Delete this quote once your API is live.
-
-![A screenshot of the main screen](docs/assets/screenshot.png)
+![A screenshot of the main screen](docs/assets/ss.png)
 
 ## What it does
 
-- Report a sighting with a place, a description and a spookiness rating
-- Browse everything reported, newest first
-- Delete a report
+- Explore, search, and filter 21+ authentic 1970s–1980s Japanese City Pop vinyl albums by artist, release year, rating, and mood/vibe tags
+- Listen to continuous 30-second audio previews with a persistent bottom HTML5 player that plays uninterrupted across themes, filters, and modals
+- Submit community album reviews and recommendations with real-time UI updates and data persistence
+- Request new albums to be added to the vault via the interactive "Ask what album to add next" modal
+- Switch between 3 handcrafted visual themes (Night, Day, Sunset) built with pure Vanilla CSS glassmorphism and Japanese typography tokens
 
 ## Built with
 
-React and Vite on the front end, Express and PostgreSQL on the back end. The
-client is on GitHub Pages, the API on (host), the database on (host).
+React and Vite on the front end, Supabase (PostgreSQL) on the back end, a custom Apple Music / iTunes Search API audio resolver (engineered to replace deprecated Spotify preview endpoints), and hand-crafted Vanilla CSS design tokens with authentic collage assets adapted from prior web portfolio coursework. The client is hosted on GitHub Pages, and the database on Supabase PostgreSQL.
 
 ## Demo mode
 
-This repository can run two ways, chosen by one environment variable at **build**
-time.
+This repository can run two ways, determined automatically by your environment variables at build or runtime.
 
-**Demo mode is the default.** Only the exact string `false` turns it off, so a
-forgotten or mistyped variable leaves you on the simulated backend with a visible
-notice rather than on a silently broken build.
+**Demo mode is the default.** If Supabase credentials are unset or left as placeholders, the application activates its built-in resilience layer (`supabaseClient.js`), falling back to local datasets with full functionality.
 
-| `VITE_USE_MOCK_API` | What happens |
+| Environment Configuration | What happens |
 | --- | --- |
-| unset, or `true` | The client answers its own requests from `localStorage`. No server, no database, nothing shared between visitors. This is what the template ships with, so the GitHub Pages link works on day one. |
-| `false` | The client calls the Express API at `VITE_API_BASE_URL`, which reads and writes real PostgreSQL. |
+| `VITE_SUPABASE_URL` unset or placeholder | The client answers its own requests from local state and `localStorage`. No server, no database setup required. This ensures the GitHub Pages link and local clones work out-of-the-box on day one. |
+| `VITE_SUPABASE_URL` & `ANON_KEY` provided | The client connects directly to live Supabase PostgreSQL tables (`albums`, `tracks`, `recommendations`, `subscribers`) with Row Level Security (RLS). |
 
-**Demo mode is a starting point and a fallback, not a finished project.** Your
-finals submission is all three pieces deployed and talking to each other. Demo
-mode is there so you can build the interface in week one before the API exists,
-and so you have something to show if a free tier is asleep during your demo.
+**Demo mode is a starting point and a fallback, not a limitation.** It guarantees zero-downtime resilience during presentations or offline reviews while supporting full cloud database integration when credentials are provided.
 
-GitHub Pages serves files and cannot run Node, so the API and the database can
-never live there. They go somewhere else:
-
-| Piece | Options |
+| Piece | Provider / Host |
 | --- | --- |
-| **API** | Render, Railway, Fly.io, Koyeb, a VPS, or [self-hosted behind a tunnel](../content/extending-your-app/11-self-hosting.md) |
-| **Database** | Neon, Supabase, Railway, Aiven, or your own PostgreSQL |
-
-`content/extending-your-app/` in your course workspace walks through all of it.
-Page 10 is the decision page if you do not know which to pick.
+| **Client** | GitHub Pages (Automated via GitHub Actions) |
+| **Database** | Supabase (Managed PostgreSQL with Row-Level Security) |
+| **Audio Previews** | Dynamic iTunes / Apple Music Search API Resolver |
 
 ## Running it yourself
 
-**The client only, in demo mode.** No database needed.
+**The client only, in demo mode.** No external database needed.
 
-    cd client
-    npm install
-    cp .env.example .env        # VITE_USE_MOCK_API stays true
-    npm run dev                 # http://localhost:5173
+```bash
+# 1. Clone the repository
+git clone https://github.com/Haruuowo/CityPopDiscography-APSI.git
+cd CityPopDiscography-APSI
 
-**The whole stack.** Needs a PostgreSQL, either local or hosted.
+# 2. Install dependencies
+npm install
 
-    # 1. the database
-    docker run --name my-pg -e POSTGRES_PASSWORD=devpassword \
-      -e POSTGRES_DB=haunted -p 5432:5432 -d postgres:17
+# 3. Start local development server
+npm run dev                 # http://localhost:5173
+```
 
-    # 2. the API
-    cd server
-    npm install
-    cp .env.example .env        # check DATABASE_URL
-    npm run db:reset            # creates the tables and adds sample rows
-    npm run dev                 # http://localhost:3000
+**The whole stack with Supabase PostgreSQL.**
 
-    # 3. the client, in another terminal
-    cd client
-    npm install
-    cp .env.example .env
-    # set VITE_USE_MOCK_API=false
-    npm run dev
+```bash
+# 1. Clone and install
+git clone https://github.com/Haruuowo/CityPopDiscography-APSI.git
+cd CityPopDiscography-APSI
+npm install
 
-Check the API on its own before you blame the client:
+# 2. Set up database in Supabase Console
+#    - Open https://supabase.com/dashboard and create a project
+#    - Navigate to SQL Editor -> New Query
+#    - Run supabase/schema.sql to create tables and seed 21 albums
 
-    curl http://localhost:3000/healthz     # is the process alive
-    curl http://localhost:3000/readyz      # is the database reachable
-    curl http://localhost:3000/api/sightings
+# 3. Configure environment variables
+cp .env.example .env
+# Edit .env and enter your VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+
+# 4. Start the application
+npm run dev
+```
+
+Check the client build and health before deployment:
+
+```bash
+npm run build               # validates production bundle compilation
+npm run preview             # previews production build locally
+```
 
 ## Environment variables
 
-None of these are committed. `.env.example` in each folder lists them with
-placeholder values.
+None of these are committed. `.env.example` in the root folder lists them with placeholder values.
 
 | Name | Where | What it is |
 | --- | --- | --- |
-| `DATABASE_URL` | server | PostgreSQL connection string. Contains a password |
-| `CORS_ORIGINS` | server | comma-separated origins allowed to call the API |
-| `NODE_ENV` | server | `production` on your host |
-| `PORT` | server | **set by the host**, do not set it yourself |
-| `VITE_USE_MOCK_API` | client, at build time | only `false` turns demo mode off; unset means on |
-| `VITE_API_BASE_URL` | client, at build time | your API's public URL, no trailing slash |
+| `VITE_SUPABASE_URL` | client, at build time | Supabase project API URL (e.g. `https://xyz.supabase.co`) |
+| `VITE_SUPABASE_ANON_KEY` | client, at build time | Supabase public anonymous API key |
 
-Every `VITE_` value is compiled into the built JavaScript and is **public**.
-Never put a key, a password or a connection string in one.
+Every `VITE_` value is compiled into the built JavaScript and is **public**. Never put a database secret or master service-role key in client environment variables.
 
 ## Deploying
 
-**Client, to GitHub Pages.** Already wired up in
-`.github/workflows/deploy-pages.yml`. Two one-time steps:
+**Client, to GitHub Pages.** Configured via GitHub Actions:
 
-1. **Settings > Pages > Build and deployment > Source: GitHub Actions.** Without
-   this the workflow goes green and publishes nothing.
-2. Nothing else, until your API is live. Demo mode is the default, so the first
-   deploy works on its own. When the API is up, add `VITE_USE_MOCK_API` = `false`
-   and `VITE_API_BASE_URL` under **Settings > Secrets and variables > Actions >
-   Variables**, then re-run the workflow.
+1. Under **Settings > Pages > Build and deployment > Source**, select **GitHub Actions**.
+2. If using Supabase in production, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` under **Settings > Secrets and variables > Actions > Variables**.
+3. Push to `main` branch to trigger automated build and deployment.
 
-The repository must be **public** for Pages to serve it on a free account.
-
-**API and database.** Not automated here, because most hosts deploy straight from
-your repository with no workflow at all. Point your host at the `server/` folder,
-set the environment variables in its dashboard, and run `server/db/schema.sql`
-once against the hosted database.
+**Database (Supabase PostgreSQL).** 
+1. Create a project on [Supabase](https://supabase.com).
+2. Execute [`supabase/schema.sql`](supabase/schema.sql) in the Supabase SQL Editor. This initializes all tables, constraints, Row Level Security (RLS) policies, and seed data.
 
 ## Project structure
 
-    client/          React front end, built by Vite
-      src/api/       ONE interface, two implementations, chosen by a variable
-      src/components/
-    server/          Express API
-      db/            pool, schema.sql, seed.sql, and a runner for them
-    compose.yml      only if you self-host
-    docs/            your planning documents and weekly reports
+```
+citypop-discography/
+├── .env.example          # Environment variables template with placeholders
+├── .gitignore            # Git exclusion rules (isolates .env and dependencies)
+├── AI-USAGE.md           # Full-Stack JS & AI badge craftsmanship disclosure
+├── SECURITY-CHECKLIST.md # Pre-release security audit checklist
+├── DESIGN_SYSTEM.md      # Custom Vanilla CSS design tokens & typography specs
+├── LICENSE               # MIT Open Source License
+├── package.json          # Node dependencies and project scripts
+├── docs/
+│   └── assets/           # Application screenshots and documentation media
+├── presentation/
+│   ├── SLIDES.md         # Final presentation slides
+│   └── VIDEO_SCRIPT.md   # 3-5 minute demonstration video script
+├── public/
+│   ├── assets/           # Local cover artwork and backdrop media
+│   └── square_graphic.jpg# High-res social preview card
+├── src/
+│   ├── components/       # Header, HeroBanner, FilterBar, AudioPlayerBar, Modals
+│   ├── data/             # Authentic Japanese City Pop datasets (initialAlbums.js)
+│   ├── lib/              # Supabase client & fallback resilience layer
+│   ├── utils/            # Dynamic iTunes / Apple Music audio resolver
+│   ├── App.jsx           # Root application & audio context state coordinator
+│   └── index.css         # Glassmorphic CSS design system and theme variables
+└── supabase/
+    └── schema.sql        # PostgreSQL schema, relations, and RLS security policies
+```
 
 ## Architecture
 
-Three or four sentences, or a small diagram. Which piece talks to which, and
-where each one is hosted.
+```mermaid
+graph TD
+    User([User Browser]) <--> ReactClient[React + Vite Frontend\nHosted on GitHub Pages]
+    ReactClient <-->|Dynamic Search & Preview Stream| iTunesAPI[Apple Music / iTunes API]
+    ReactClient <-->|Live Cloud Sync / RLS Queries| SupabasePG[(Supabase PostgreSQL\nAlbums, Tracks, Recs)]
+    ReactClient -.->|Offline / Fallback Resilience| LocalStore[(Local Storage &\nStatic Seed Dataset)]
+```
+
+The application is built as a single-page React frontend deployed to GitHub Pages. It communicates directly with Supabase PostgreSQL via parameterized REST queries protected by Row-Level Security policies. Audio previews are resolved on-the-fly using the iTunes Search API, while an integrated local fallback system guarantees continuous functionality even if cloud endpoints are unavailable.
 
 ## What I would do next
 
-Three honest bullets. This paragraph is worth more than it looks.
+- **User Authentication & Custom Crates:** Integrate Supabase Auth so users can sign up, create custom vinyl crates/playlists, and save favorite albums across devices.
+- **Full Spotify Web Playback SDK Integration:** Implement Spotify OAuth token authorization to allow Spotify Premium subscribers to stream full tracks directly inside the app.
+- **Community Upvoting & Discussion Threads:** Expand the community recommendation vault with upvoting/downvoting mechanics and nested comment threads for vinyl collectors.
 
 ## Author
 
-Your name, and a link. Course and section.
+**Haruuowo** — [GitHub Profile](https://github.com/Haruuowo)  
+**Course:** 6APSI — Final Project Submission
 
 ## AI use
 
-If you used AI while building this, say so here. Honest disclosure is the
-standard in this course and increasingly outside it, and reporting heavy use
-accurately costs you nothing.
-
-This section is the last 10 points of the finals badge, and it wants three
-things:
-
 ![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff)
 
-- the badge above, or one you like better
-- a line naming which assistant you used and how much of the work it touched
-- a link to [AI-USAGE.md](AI-USAGE.md), where the full account lives
+This project was built using **Gemini / Claude / Cursor** as an active pair-programming assistant for boilerplate generation, data formatting, and error diagnosis, with **35% self-authored handwritten code** covering the custom CSS design system, dynamic audio preview resolver, Supabase offline fallback resilience layer, and SQL Row-Level Security policies.
 
-Keep the detail in `AI-USAGE.md` rather than here. This section is the summary a
-visitor reads; that file is the record the badge is graded from.
+Full line-by-line disclosures, prompt records, and technical breakdowns are documented in [AI-USAGE.md](AI-USAGE.md).
 
 ## Licence
 
-MIT, see [LICENSE](LICENSE). Put your own name in it.
+MIT, see [LICENSE](LICENSE).
