@@ -5,7 +5,7 @@ A curated full-stack web application and discography vault for 1970s–1980s Jap
 **Live link to github repo:** https://haruuowo.github.io/CityPopDiscography-APSI/  
 **Live site:** https://city-pop-discography-apsi.vercel.app
 
-**API:** https://your-project-ref.supabase.co  
+**API:** https://nsjtlnihmnjqzzwxsafj.supabase.co 
 **Demo video:** [Video Presentation Walkthrough](presentation/VIDEO_SCRIPT.md)
 
 > **This deployment is running in demo mode by default.** The interface is real; the backend is simulated in your browser via authentic built-in datasets and `localStorage` so the site works instantly without needing a server. See [Demo mode](#demo-mode) below.
