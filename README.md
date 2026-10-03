@@ -2,7 +2,7 @@
 
 A curated full-stack web application and discography vault for 1970s–1980s Japanese City Pop, Funk, and AOR vinyl records, allowing retro music enthusiasts to discover albums by vibe, listen to continuous 30-second audio previews, and share community recommendations.
 
-**Live site:** https://haruuowo.github.io/CityPopDiscography-APSI/  
+**Live link to github repo:** https://haruuowo.github.io/CityPopDiscography-APSI/  
 **Live site:** https://city-pop-discography-apsi.vercel.app
 
 **API:** https://your-project-ref.supabase.co  
